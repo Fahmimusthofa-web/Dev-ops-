@@ -1,0 +1,447 @@
+Lembar kerja otomatis - m02 - 2026-10-06 05:20:25 +07
+Host: VINN | User: vinn_vinn | Linux 6.6.87.2-microsoft-standard-WSL2
+GNU bash, version 5.3.9(1)-release (x86_64-pc-linux-gnu) | git version 2.53.0
+
+==================== M02 JOB 1 - Struktur berkas, kepemilikan, izin akses ====================
+
+$ ls -l / | head -n 12
+total 2780
+lrwxrwxrwx   1 root root       7 Apr 20 15:46 bin -> usr/bin
+drwxr-xr-x   2 root root    4096 Apr 20 15:46 boot
+drwxr-xr-x  15 root root    3840 Oct  6 04:41 dev
+drwxr-xr-x  89 root root    4096 Oct  6 04:41 etc
+drwxr-xr-x   3 root root    4096 Sep 21 01:00 home
+-rwxr-xr-x   1 root root 2781568 Dec 12  2025 init
+lrwxrwxrwx   1 root root       7 Apr 20 15:46 lib -> usr/lib
+lrwxrwxrwx   1 root root       9 Apr 20 15:46 lib64 -> usr/lib64
+drwx------   2 root root   16384 Sep 21 00:58 lost+found
+drwxr-xr-x   2 root root    4096 Aug 27 21:10 media
+drwxr-xr-x   5 root root    4096 Sep 21 00:58 mnt
+
+$ ls /etc | head -n 10
+PackageKit
+X11
+adduser.conf
+alternatives
+apparmor
+apparmor.d
+apport
+apt
+bash.bashrc
+bash_completion
+
+$ ls /var/log | head -n 10
+README
+alternatives.log
+alternatives.log.1
+apt
+auth.log
+auth.log.1
+bootstrap.log
+btmp
+btmp.1
+chrony
+
+$ df -h /
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sdd       1007G  1.8G  954G   1% /
+
+$ id
+uid=1000(vinn_vinn) gid=1000(vinn_vinn) groups=1000(vinn_vinn),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),100(users)
+
+$ groups
+vinn_vinn adm cdrom sudo dip plugdev users
+
+$ umask
+0022
+
+$ echo "TOKEN_SIMULASI=<disamarkan>" > kredensial-latihan.txt
+
+$ ls -l kredensial-latihan.txt
+-rw-r--r-- 1 vinn_vinn vinn_vinn 22 Oct  6 05:20 kredensial-latihan.txt
+
+$ stat -c '%a %U:%G %n' kredensial-latihan.txt
+644 vinn_vinn:vinn_vinn kredensial-latihan.txt
+
+$ chmod 600 kredensial-latihan.txt
+
+$ stat -c '%a %U:%G %n' kredensial-latihan.txt
+600 vinn_vinn:vinn_vinn kredensial-latihan.txt
+
+$ chmod u+x,go-rwx kredensial-latihan.txt
+
+$ stat -c '%a %U:%G %n' kredensial-latihan.txt
+700 vinn_vinn:vinn_vinn kredensial-latihan.txt
+
+$ chmod 600 kredensial-latihan.txt
+
+$ stat -c '%a %U:%G %n' kredensial-latihan.txt
+600 vinn_vinn:vinn_vinn kredensial-latihan.txt
+
+$ find '/home/vinn_vinn/praktikum-devops' -type f -name '*.sh' | head -n 10
+/home/vinn_vinn/praktikum-devops/minggu-01/app-sentra/setup.sh
+
+$ find '/home/vinn_vinn/praktikum-devops' -type f -name '*.md' -mtime -7 | head -n 10
+
+$ find '/home/vinn_vinn/praktikum-devops' -type d -name .venv -prune -o -type f -print | head -n 20
+/home/vinn_vinn/praktikum-devops/minggu-02/kredensial-latihan.txt
+/home/vinn_vinn/praktikum-devops/hasil/m02-lembar-kerja.txt
+/home/vinn_vinn/praktikum-devops/minggu-01/serah-terima/app-sentra/src/app.py
+/home/vinn_vinn/praktikum-devops/minggu-01/serah-terima/app-sentra/HANDOVER.md
+/home/vinn_vinn/praktikum-devops/minggu-01/serah-terima/app-sentra/requirements.txt
+/home/vinn_vinn/praktikum-devops/minggu-01/serah-terima/JOB3-Value-Stream-Map.txt
+/home/vinn_vinn/praktikum-devops/minggu-01/00-environment-check.log
+/home/vinn_vinn/praktikum-devops/minggu-01/app-sentra/LAPORAN_PRAKTIKUM_DEVOPS_M01.md
+/home/vinn_vinn/praktikum-devops/minggu-01/app-sentra/src/app.py
+/home/vinn_vinn/praktikum-devops/minggu-01/app-sentra/.git/refs/remotes/origin/main
+/home/vinn_vinn/praktikum-devops/minggu-01/app-sentra/.git/refs/heads/main
+/home/vinn_vinn/praktikum-devops/minggu-01/app-sentra/.git/description
+/home/vinn_vinn/praktikum-devops/minggu-01/app-sentra/.git/info/exclude
+/home/vinn_vinn/praktikum-devops/minggu-01/app-sentra/.git/config
+/home/vinn_vinn/praktikum-devops/minggu-01/app-sentra/.git/HEAD
+/home/vinn_vinn/praktikum-devops/minggu-01/app-sentra/.git/index
+/home/vinn_vinn/praktikum-devops/minggu-01/app-sentra/.git/objects/cc/954cb901b627f258eb11f0b32f33a3d69f0c1a
+/home/vinn_vinn/praktikum-devops/minggu-01/app-sentra/.git/objects/9c/6ff89e888ab8ea8ea17aca3e2f8ee3e2aadbca
+/home/vinn_vinn/praktikum-devops/minggu-01/app-sentra/.git/objects/13/62f6923c94c62ed12c91abc35a2fb1268afbda
+/home/vinn_vinn/praktikum-devops/minggu-01/app-sentra/.git/objects/bf/ccda303f7bed017cd2c23f6481922f9c2b683f
+
+==================== M02 JOB 2 - Analisis log dengan pipeline teks ====================
+
+$ bash '/home/vinn_vinn/Dev-ops-/minggu-01/app-sentra/buat-log.sh' app.log
+Dibuat: app.log (500 baris)
+
+$ head -n 3 app.log
+172.16.4.7 - - [05/Oct/2026:05:59:25 +0700] "GET /health HTTP/1.1" 201 769
+172.16.4.7 - - [05/Oct/2026:06:49:25 +0700] "GET / HTTP/1.1" 200 213
+192.168.5.20 - - [06/Oct/2026:04:05:25 +0700] "GET /health HTTP/1.1" 200 1093
+
+$ wc -l app.log
+500 app.log
+
+$ awk '{print NF}' app.log | sort -u
+10
+
+$ awk '{print $9}' app.log | sort | uniq -c | sort -rn
+    222 200
+     93 404
+     56 301
+     46 201
+     43 502
+     40 500
+# Observasi: apa yang terjadi bila 'sort' dihapus dari pipeline?
+
+$ awk '{print $9}' app.log | uniq -c | head -n 8
+      1 201
+      5 200
+      1 201
+      1 200
+      1 301
+      2 500
+      1 301
+      1 200
+
+$ awk '{print $1}' app.log | sort | uniq -c | sort -rn | head -n 5
+    122 10.10.0.12
+    104 172.16.4.7
+     97 192.168.5.20
+     91 10.10.0.13
+     86 10.10.0.11
+
+$ awk '$9 >= 500 {print $7}' app.log | sort | uniq -c | sort -rn
+     20 /static/app.js
+     19 /api/users
+     18 /api/orders
+     15 /
+     11 /health
+
+$ awk '{s+=$10; n++} END {printf "Rata-rata respons: %.1f ms dari %d permintaan\n", s/n, n}' app.log
+Rata-rata respons: 576.5 ms dari 500 permintaan
+
+$ awk '$10 > 1000 {print $7, $10}' app.log | sort -k2 -rn | head -n 5
+/api/orders 1200
+/api/orders 1195
+/health 1193
+/static/app.js 1192
+/static/app.js 1188
+
+$ local total gagal;
+total=$(wc -l < app.log);
+gagal=$(awk '$9 >= 500' app.log | wc -l);
+awk -v t="$total" -v e="$gagal" 'BEGIN { printf "Proksi Change Failure Rate: %.2f%% (%d dari %d)\n", e/t*100, e, t }'
+Proksi Change Failure Rate: 16.60% (83 dari 500)
+
+$ sed 's| HTTP/1.1||' app.log | head -n 3
+172.16.4.7 - - [05/Oct/2026:05:59:25 +0700] "GET /health" 201 769
+172.16.4.7 - - [05/Oct/2026:06:49:25 +0700] "GET /" 200 213
+192.168.5.20 - - [06/Oct/2026:04:05:25 +0700] "GET /health" 200 1093
+
+$ sed -n "1,5p" app.log
+172.16.4.7 - - [05/Oct/2026:05:59:25 +0700] "GET /health HTTP/1.1" 201 769
+172.16.4.7 - - [05/Oct/2026:06:49:25 +0700] "GET / HTTP/1.1" 200 213
+192.168.5.20 - - [06/Oct/2026:04:05:25 +0700] "GET /health HTTP/1.1" 200 1093
+10.10.0.13 - - [05/Oct/2026:08:37:25 +0700] "GET / HTTP/1.1" 200 761
+192.168.5.20 - - [05/Oct/2026:13:01:25 +0700] "GET /static/app.js HTTP/1.1" 200 486
+
+$ { 
+echo "=== Ringkasan Analisis Log $(date '+%F %T') ===";
+echo "Total permintaan : $(wc -l < app.log)";
+echo "--- Sebaran kode status ---";
+awk '{print $9}' app.log | sort | uniq -c | sort -rn
+} | tee ringkasan-log.txt
+=== Ringkasan Analisis Log 2026-10-06 05:20:27 ===
+Total permintaan : 500
+--- Sebaran kode status ---
+    222 200
+     93 404
+     56 301
+     46 201
+     43 502
+     40 500
+
+==================== M02 JOB 3 - Proses, layanan, sumber daya ====================
+
+$ ps -eo pid,ppid,user,%cpu,%mem,etime,comm --sort=-%cpu | head -n 8
+    PID    PPID USER     %CPU %MEM     ELAPSED COMMAND
+   1963    1961 vinn_vi+  0.9  0.0       00:02 bash
+   1964    1961 vinn_vi+  0.4  0.0       00:02 tee
+      6       2 root      0.0  0.0       38:57 init
+   1829       1 root      0.0  0.1       07:52 wsl-pro-service
+      1       0 root      0.0  0.1       38:57 systemd
+     88       1 root      0.0  0.1       38:57 systemd-udevd
+    312     308 vinn_vi+  0.0  0.0       38:56 bash
+
+$ top -b -n 1 | head -n 12
+top - 05:20:28 up 38 min,  1 user,  load average: 0.08, 0.02, 0.01
+Tasks:  33 total,   1 running,  32 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st 
+MiB Mem :   7794.2 total,   7137.0 free,    568.1 used,    243.9 buff/cache     
+MiB Swap:   2048.0 total,   2048.0 free,      0.0 used.   7226.1 avail Mem 
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+      1 root      20   0   24260  14308  11108 S   0.0   0.2   0:00.42 systemd
+      2 root      20   0    3120   2176   2048 S   0.0   0.0   0:00.00 init-sy+
+      6 root      20   0    3168   2220   1792 S   0.0   0.0   0:01.16 init
+     43 root      19  -1   50380  15872  14848 S   0.0   0.2   0:00.16 systemd+
+     77 systemd+  20   0   22400  13440  11264 S   0.0   0.2   0:00.03 systemd+
+# Menjalankan aplikasi lewat setup.sh (sekaligus mengisi /tmp/sentra-deploy.log untuk JOB 5)
+
+$ pgrep -af '[s]rc/app.py'
+2715 python3 /home/vinn_vinn/Dev-ops-/minggu-01/app-sentra/src/app.py
+
+$ ss -ltnp 2>/dev/null | grep 5000 || ss -ltn | grep 5000
+LISTEN 0      128         127.0.0.1:5000      0.0.0.0:*    users:(("python3",pid=2715,fd=3))
+
+$ curl -s http://127.0.0.1:5000/health
+{"status":"ok"}
+
+$ ps -p 2715 -o pid,comm,etime
+    PID COMMAND             ELAPSED
+   2715 python3               00:03
+
+$ kill -TERM 2715
+# Waktu aplikasi berhenti setelah SIGTERM: 0.0 detik
+
+$ pgrep -af '[s]rc/app.py' || echo 'Aplikasi berhasil dihentikan secara anggun.'
+Aplikasi berhasil dihentikan secara anggun.
+
+$ ss -ltn | grep 5000 || echo 'Port 5000 tidak lagi listen.'
+Port 5000 tidak lagi listen.
+
+$ df -h
+Filesystem      Size  Used Avail Use% Mounted on
+none            3.9G     0  3.9G   0% /usr/lib/modules/6.6.87.2-microsoft-standard-WSL2
+none            3.9G  4.0K  3.9G   1% /mnt/wsl
+drivers         475G  429G   46G  91% /usr/lib/wsl/drivers
+/dev/sdd       1007G  1.8G  954G   1% /
+none            3.9G   84K  3.9G   1% /mnt/wslg
+none            3.9G     0  3.9G   0% /usr/lib/wsl/lib
+rootfs          3.9G  2.7M  3.8G   1% /init
+none            3.9G  560K  3.9G   1% /run
+none            3.9G     0  3.9G   0% /run/lock
+none            3.9G     0  3.9G   0% /run/shm
+none            3.9G   76K  3.9G   1% /mnt/wslg/versions.txt
+none            3.9G   76K  3.9G   1% /mnt/wslg/doc
+C:\             475G  429G   46G  91% /mnt/c
+none            1.0M     0  1.0M   0% /run/credentials/systemd-journald.service
+tmpfs           3.9G  8.0K  3.9G   1% /tmp
+none            1.0M     0  1.0M   0% /run/credentials/systemd-resolved.service
+none            1.0M     0  1.0M   0% /run/credentials/getty@tty1.service
+none            1.0M     0  1.0M   0% /run/credentials/console-getty.service
+tmpfs           780M   12K  780M   1% /run/user/1000
+
+$ free -h
+               total        used        free      shared  buff/cache   available
+Mem:           7.6Gi       569Mi       6.9Gi       3.5Mi       277Mi       7.1Gi
+Swap:          2.0Gi          0B       2.0Gi
+
+$ uptime
+ 05:20:37 up 39 min,  1 user,  load average: 0.14, 0.03, 0.01
+
+$ systemctl list-units --type=service --state=running --no-pager 2>&1 | head -n 10
+  UNIT                        LOAD   ACTIVE SUB     DESCRIPTION
+  chrony.service              loaded active running chrony, an NTP client/server
+  console-getty.service       loaded active running Console Getty
+  cron.service                loaded active running Regular background program processing daemon
+  dbus.service                loaded active running D-Bus System Message Bus
+  getty@tty1.service          loaded active running Getty on tty1
+  networkd-dispatcher.service loaded active running Dispatcher daemon for systemd-networkd
+  polkit.service              loaded active running Authorization Manager
+  rsyslog.service             loaded active running System Logging Service
+  systemd-journald.service    loaded active running Journal Service
+
+$ systemctl status cron --no-pager 2>&1 | head -n 8
+● cron.service - Regular background program processing daemon
+     Loaded: loaded (/usr/lib/systemd/system/cron.service; enabled; preset: enabled)
+     Active: active (running) since Tue 2026-10-06 04:41:30 +07; 39min ago
+ Invocation: e97f9e5da1044ce79f1c01ef8c1f1f5d
+       Docs: man:cron(8)
+   Main PID: 107 (cron)
+      Tasks: 1 (limit: 9341)
+     Memory: 764K (peak: 2.6M)
+
+$ journalctl -n 20 --no-pager 2>&1 | head -n 20
+Oct 06 05:12:35 VINN systemd[1]: Started wsl-pro.service - Bridge to Ubuntu Pro agent on Windows.
+Oct 06 05:12:35 VINN wsl-pro-service[1829]: WARNING Daemon: could not connect to Windows Agent: could not get address: could not read agent port file "/mnt/c/Users/LENOVO LOQ/.ubuntupro/.address": open /mnt/c/Users/LENOVO LOQ/.ubuntupro/.address: no such file or directory
+Oct 06 05:12:36 VINN wsl-pro-service[1829]: WARNING Daemon: could not connect to Windows Agent: could not get address: could not read agent port file "/mnt/c/Users/LENOVO LOQ/.ubuntupro/.address": open /mnt/c/Users/LENOVO LOQ/.ubuntupro/.address: no such file or directory
+Oct 06 05:12:38 VINN wsl-pro-service[1829]: WARNING Daemon: could not connect to Windows Agent: could not get address: could not read agent port file "/mnt/c/Users/LENOVO LOQ/.ubuntupro/.address": open /mnt/c/Users/LENOVO LOQ/.ubuntupro/.address: no such file or directory
+Oct 06 05:12:42 VINN wsl-pro-service[1829]: WARNING Daemon: could not connect to Windows Agent: could not get address: could not read agent port file "/mnt/c/Users/LENOVO LOQ/.ubuntupro/.address": open /mnt/c/Users/LENOVO LOQ/.ubuntupro/.address: no such file or directory
+Oct 06 05:12:50 VINN wsl-pro-service[1829]: WARNING Daemon: could not connect to Windows Agent: could not get address: could not read agent port file "/mnt/c/Users/LENOVO LOQ/.ubuntupro/.address": open /mnt/c/Users/LENOVO LOQ/.ubuntupro/.address: no such file or directory
+Oct 06 05:13:06 VINN wsl-pro-service[1829]: WARNING Daemon: could not connect to Windows Agent: could not get address: could not read agent port file "/mnt/c/Users/LENOVO LOQ/.ubuntupro/.address": open /mnt/c/Users/LENOVO LOQ/.ubuntupro/.address: no such file or directory
+Oct 06 05:13:38 VINN wsl-pro-service[1829]: WARNING Daemon: could not connect to Windows Agent: could not get address: could not read agent port file "/mnt/c/Users/LENOVO LOQ/.ubuntupro/.address": open /mnt/c/Users/LENOVO LOQ/.ubuntupro/.address: no such file or directory
+Oct 06 05:14:38 VINN wsl-pro-service[1829]: WARNING Daemon: could not connect to Windows Agent: could not get address: could not read agent port file "/mnt/c/Users/LENOVO LOQ/.ubuntupro/.address": open /mnt/c/Users/LENOVO LOQ/.ubuntupro/.address: no such file or directory
+Oct 06 05:14:38 VINN systemd[1]: Starting logrotate.service - Rotate log files...
+Oct 06 05:14:38 VINN systemd[1]: logrotate.service: Deactivated successfully.
+Oct 06 05:14:38 VINN systemd[1]: Finished logrotate.service - Rotate log files.
+Oct 06 05:15:38 VINN wsl-pro-service[1829]: WARNING Daemon: could not connect to Windows Agent: could not get address: could not read agent port file "/mnt/c/Users/LENOVO LOQ/.ubuntupro/.address": open /mnt/c/Users/LENOVO LOQ/.ubuntupro/.address: no such file or directory
+Oct 06 05:16:38 VINN wsl-pro-service[1829]: WARNING Daemon: could not connect to Windows Agent: could not get address: could not read agent port file "/mnt/c/Users/LENOVO LOQ/.ubuntupro/.address": open /mnt/c/Users/LENOVO LOQ/.ubuntupro/.address: no such file or directory
+Oct 06 05:17:01 VINN CRON[1861]: pam_unix(cron:session): session opened for user root(uid=0) by root(uid=0)
+Oct 06 05:17:01 VINN CRON[1863]: (root) CMD (cd / && run-parts --report /etc/cron.hourly)
+Oct 06 05:17:01 VINN CRON[1861]: pam_unix(cron:session): session closed for user root
+Oct 06 05:17:38 VINN wsl-pro-service[1829]: WARNING Daemon: could not connect to Windows Agent: could not get address: could not read agent port file "/mnt/c/Users/LENOVO LOQ/.ubuntupro/.address": open /mnt/c/Users/LENOVO LOQ/.ubuntupro/.address: no such file or directory
+Oct 06 05:18:39 VINN wsl-pro-service[1829]: WARNING Daemon: could not connect to Windows Agent: could not get address: could not read agent port file "/mnt/c/Users/LENOVO LOQ/.ubuntupro/.address": open /mnt/c/Users/LENOVO LOQ/.ubuntupro/.address: no such file or directory
+Oct 06 05:19:39 VINN wsl-pro-service[1829]: WARNING Daemon: could not connect to Windows Agent: could not get address: could not read agent port file "/mnt/c/Users/LENOVO LOQ/.ubuntupro/.address": open /mnt/c/Users/LENOVO LOQ/.ubuntupro/.address: no such file or directory
+
+$ service --status-all 2>/dev/null | head -n 10
+ [ - ]  apparmor
+ [ - ]  apport
+ [ + ]  chrony
+ [ - ]  console-setup.sh
+ [ + ]  cron
+ [ + ]  dbus
+ [ - ]  keyboard-setup.sh
+ [ + ]  procps
+ [ - ]  rsync
+ [ - ]  screen-cleanup
+
+==================== M02 JOB 4 - sysreport.sh: pengujian jalur eksekusi dan exit code ====================
+
+$ bash '/home/vinn_vinn/Dev-ops-/minggu-01/app-sentra/sysreport.sh' 
+Host                 : VINN
+Pemakaian disk       : 1%
+Pemakaian memori     : 7%
+Jumlah proses        : 35
+Status               : OK
+[exit code = 0]
+
+$ bash '/home/vinn_vinn/Dev-ops-/minggu-01/app-sentra/sysreport.sh' -j
+{"host":"VINN","disk_pct":1,"mem_pct":7,"proc":35,"status":"OK"}
+[exit code = 0]
+
+$ bash '/home/vinn_vinn/Dev-ops-/minggu-01/app-sentra/sysreport.sh' -d 1
+Host                 : VINN
+Pemakaian disk       : 1%
+Pemakaian memori     : 7%
+Jumlah proses        : 35
+Status               : PERINGATAN
+[exit code = 2]
+[exit code = 2]
+
+$ bash '/home/vinn_vinn/Dev-ops-/minggu-01/app-sentra/sysreport.sh' -d abc
+[05:20:37] GALAT: ambang disk harus berupa angka
+[exit code = 1]
+[exit code = 1]
+
+$ bash '/home/vinn_vinn/Dev-ops-/minggu-01/app-sentra/sysreport.sh' -z
+sysreport.sh v1.0.0 - laporan kesehatan sistem
+Penggunaan: sysreport.sh [OPSI]
+  -d N   Ambang peringatan pemakaian disk dalam persen (default: 80)
+  -j     Keluarkan hasil dalam format JSON
+  -h     Tampilkan bantuan ini
+Exit code: 0 = sehat, 2 = melewati ambang, 1 = galat penggunaan
+[05:20:37] GALAT: opsi tidak dikenal: -z
+[exit code = 1]
+[exit code = 1]
+
+$ bash '/home/vinn_vinn/Dev-ops-/minggu-01/app-sentra/sysreport.sh' -h
+sysreport.sh v1.0.0 - laporan kesehatan sistem
+Penggunaan: sysreport.sh [OPSI]
+  -d N   Ambang peringatan pemakaian disk dalam persen (default: 80)
+  -j     Keluarkan hasil dalam format JSON
+  -h     Tampilkan bantuan ini
+Exit code: 0 = sehat, 2 = melewati ambang, 1 = galat penggunaan
+[exit code = 0]
+
+--- Tabel exit code (untuk laporan) ---
+Skenario                   Exit code
+sysreport.sh               0
+sysreport.sh -j            0
+sysreport.sh -d 1          2
+sysreport.sh -d abc        1
+sysreport.sh -z            1
+sysreport.sh -h            0
+
+$ shellcheck '/home/vinn_vinn/Dev-ops-/minggu-01/app-sentra/sysreport.sh' '/home/vinn_vinn/Dev-ops-/minggu-01/app-sentra/setup.sh' '/home/vinn_vinn/Dev-ops-/minggu-01/app-sentra/lib/common.sh' '/home/vinn_vinn/Dev-ops-/minggu-01/app-sentra/buat-log.sh' && echo 'Bersih: tidak ada peringatan.'
+
+In /home/vinn_vinn/Dev-ops-/minggu-01/app-sentra/setup.sh line 6:
+source "$APP_DIR/lib/common.sh"
+       ^----------------------^ SC1091 (info): Not following: lib/common.sh was not specified as input (see shellcheck -x).
+
+For more information:
+  https://www.shellcheck.net/wiki/SC1091 -- Not following: lib/common.sh was ...
+[exit code = 1]
+[exit code = 1]
+
+==================== M02 JOB 5 - Log setup.sh dan uji idempotensi ====================
+
+$ tail -n 12 /tmp/sentra-deploy.log 2>&1
+2026-10-06T05:20:28+0700 [INFO ] [1/5] Memeriksa prasyarat...
+2026-10-06T05:20:28+0700 [INFO ] [2/5] Menyiapkan virtual environment...
+2026-10-06T05:20:30+0700 [INFO ] [3/5] Memasang dependensi terkunci...
+2026-10-06T05:20:33+0700 [INFO ] [4/5] Menjalankan aplikasi pada port 5000...
+2026-10-06T05:20:36+0700 [INFO ] [5/5] Melakukan smoke test...
+2026-10-06T05:20:36+0700 [INFO ] SUKSES: aplikasi berjalan dan lulus health check (PID 2715).
+2026-10-06T05:20:36+0700 [INFO ] Tekan Ctrl+C untuk menghentikan aplikasi.
+# Idempotensi sysreport.sh: tiga kali berturut-turut
+
+$ bash '/home/vinn_vinn/Dev-ops-/minggu-01/app-sentra/sysreport.sh' -j
+{"host":"VINN","disk_pct":1,"mem_pct":7,"proc":35,"status":"OK"}
+[exit code = 0]
+
+$ bash '/home/vinn_vinn/Dev-ops-/minggu-01/app-sentra/sysreport.sh' -j
+{"host":"VINN","disk_pct":1,"mem_pct":7,"proc":35,"status":"OK"}
+[exit code = 0]
+
+$ bash '/home/vinn_vinn/Dev-ops-/minggu-01/app-sentra/sysreport.sh' -j
+{"host":"VINN","disk_pct":1,"mem_pct":7,"proc":35,"status":"OK"}
+[exit code = 0]
+# Idempotensi setup.sh: tiga kali (masing-masing dihentikan otomatis setelah 20 detik)
+
+$ cd "$APP_DIR" && PORT="$PORT" timeout 20 ./setup.sh > /tmp/idem-setup.out 2>&1;
+echo "exit setup.sh = $?  (124 = dihentikan timeout, normal)";
+tail -n 3 /tmp/idem-setup.out
+exit setup.sh = 124  (124 = dihentikan timeout, normal)
+127.0.0.1 - - [06/Oct/2026 05:20:41] "GET /health HTTP/1.1" 200 -
+2026-10-06T05:20:41+0700 [INFO ] SUKSES: aplikasi berjalan dan lulus health check (PID 3021).
+2026-10-06T05:20:41+0700 [INFO ] Tekan Ctrl+C untuk menghentikan aplikasi.
+
+$ cd "$APP_DIR" && PORT="$PORT" timeout 20 ./setup.sh > /tmp/idem-setup.out 2>&1;
+echo "exit setup.sh = $?  (124 = dihentikan timeout, normal)";
+tail -n 3 /tmp/idem-setup.out
+exit setup.sh = 124  (124 = dihentikan timeout, normal)
+127.0.0.1 - - [06/Oct/2026 05:21:03] "GET /health HTTP/1.1" 200 -
+2026-10-06T05:21:03+0700 [INFO ] SUKSES: aplikasi berjalan dan lulus health check (PID 3096).
+2026-10-06T05:21:03+0700 [INFO ] Tekan Ctrl+C untuk menghentikan aplikasi.
+
+$ cd "$APP_DIR" && PORT="$PORT" timeout 20 ./setup.sh > /tmp/idem-setup.out 2>&1;
+echo "exit setup.sh = $?  (124 = dihentikan timeout, normal)";
+tail -n 3 /tmp/idem-setup.out
