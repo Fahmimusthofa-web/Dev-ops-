@@ -1,0 +1,346 @@
+Lembar kerja otomatis - m03 - 2026-10-06 05:22:02 +07
+Host: VINN | User: vinn_vinn | Linux 6.6.87.2-microsoft-standard-WSL2
+GNU bash, version 5.3.9(1)-release (x86_64-pc-linux-gnu) | git version 2.53.0
+
+==================== M03 JOB 2 - Tiga area kerja dan siklus commit ====================
+
+$ git status
+On branch main
+
+No commits yet
+
+nothing to commit (create/copy files and use "git add" to track)
+
+$ ls -a
+.
+..
+.git
+
+$ echo "# Lab Git" > README.md
+
+$ git status --short
+?? README.md
+
+$ git add README.md
+
+$ git status --short
+A  README.md
+
+$ git commit -m "docs: tambahkan README awal"
+[main (root-commit) 1844762] docs: tambahkan README awal
+ 1 file changed, 1 insertion(+)
+ create mode 100644 README.md
+
+$ git log --oneline
+1844762 docs: tambahkan README awal
+
+$ printf 'baris pertama\n' > catatan.txt
+
+$ git add catatan.txt
+
+$ printf 'baris kedua\n' >> catatan.txt
+
+$ git status --short
+AM catatan.txt
+# git diff = working directory vs staging; git diff --staged = staging vs repository
+
+$ git diff
+diff --git a/catatan.txt b/catatan.txt
+index e10f858..a915bb4 100644
+--- a/catatan.txt
++++ b/catatan.txt
+@@ -1 +1,2 @@
+ baris pertama
++baris kedua
+
+$ git diff --staged
+diff --git a/catatan.txt b/catatan.txt
+new file mode 100644
+index 0000000..e10f858
+--- /dev/null
++++ b/catatan.txt
+@@ -0,0 +1 @@
++baris pertama
+
+$ git add catatan.txt
+
+$ git commit -m "feat: tambahkan catatan awal"
+[main 27c77e2] feat: tambahkan catatan awal
+ 1 file changed, 2 insertions(+)
+ create mode 100644 catatan.txt
+
+$ mkdir -p build && echo "artefak" > build/hasil.bin
+
+$ printf 'build/\n*.log\n.env\n' > .gitignore
+
+$ git status --short
+?? .gitignore
+
+$ git add .gitignore
+
+$ git commit -m "chore: abaikan artefak build dan berkas rahasia"
+[main fc27574] chore: abaikan artefak build dan berkas rahasia
+ 1 file changed, 3 insertions(+)
+ create mode 100644 .gitignore
+
+$ git check-ignore -v build/hasil.bin
+.gitignore:1:build/	build/hasil.bin
+
+==================== M03 JOB 3 - Anatomi objek dan penelusuran riwayat ====================
+
+$ git log --oneline --graph --decorate
+* fc27574 (HEAD -> main) chore: abaikan artefak build dan berkas rahasia
+* 27c77e2 feat: tambahkan catatan awal
+* 1844762 docs: tambahkan README awal
+
+$ git log --pretty=format:"%h %ad %an %s" --date=short
+fc27574 2026-10-06 Fahmi Zainul Musthofa chore: abaikan artefak build dan berkas rahasia
+27c77e2 2026-10-06 Fahmi Zainul Musthofa feat: tambahkan catatan awal
+1844762 2026-10-06 Fahmi Zainul Musthofa docs: tambahkan README awal
+$ git show --stat HEAD
+commit fc275742e6600ebe365dece475d6e281dacb369b
+Author: Fahmi Zainul Musthofa <Fahmi15062005@gmail.com>
+Date:   Tue Oct 6 05:22:03 2026 +0700
+
+    chore: abaikan artefak build dan berkas rahasia
+
+ .gitignore | 3 +++
+ 1 file changed, 3 insertions(+)
+
+$ git show HEAD:README.md
+# Lab Git
+
+$ git cat-file -t HEAD
+commit
+
+$ git cat-file -p HEAD
+tree e4193b04cf395f9dda3f4650aaf0c182d54fdd9f
+parent 27c77e29a63291157b852f4eec296c5bea798683
+author Fahmi Zainul Musthofa <Fahmi15062005@gmail.com> 1791238923 +0700
+committer Fahmi Zainul Musthofa <Fahmi15062005@gmail.com> 1791238923 +0700
+
+chore: abaikan artefak build dan berkas rahasia
+
+$ git cat-file -p 'HEAD^{tree}'
+100644 blob 3fa65dcff33840405df7f65acb6320668fcc930e	.gitignore
+100644 blob d04dddefa29dba3199ad370a8281076991a390c7	README.md
+100644 blob a915bb4687fe4a1a5735b9bf0635635c4c4db513	catatan.txt
+
+$ git cat-file -p 'HEAD~2^{tree}'
+100644 blob d04dddefa29dba3199ad370a8281076991a390c7	README.md
+# Observasi kunci: hash blob README.md pada dua commit berbeda (sama = objek dirujuk, bukan disalin)
+
+$ git rev-parse HEAD~2:README.md HEAD:README.md
+d04dddefa29dba3199ad370a8281076991a390c7
+d04dddefa29dba3199ad370a8281076991a390c7
+
+$ echo "halo" | git hash-object --stdin
+1185b465e5d77cbaf348effaf07b801e63998d17
+
+$ git diff HEAD~1 HEAD
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+index 0000000..3fa65dc
+--- /dev/null
++++ b/.gitignore
+@@ -0,0 +1,3 @@
++build/
++*.log
++.env
+
+$ git diff HEAD~2 HEAD --stat
+ .gitignore  | 3 +++
+ catatan.txt | 2 ++
+ 2 files changed, 5 insertions(+)
+
+$ git log -p -n 1 -- catatan.txt
+commit 27c77e29a63291157b852f4eec296c5bea798683
+Author: Fahmi Zainul Musthofa <Fahmi15062005@gmail.com>
+Date:   Tue Oct 6 05:22:03 2026 +0700
+
+    feat: tambahkan catatan awal
+
+diff --git a/catatan.txt b/catatan.txt
+new file mode 100644
+index 0000000..a915bb4
+--- /dev/null
++++ b/catatan.txt
+@@ -0,0 +1,2 @@
++baris pertama
++baris kedua
+
+==================== M03 JOB 4 - amend, restore, reset, revert, reflog ====================
+# 4.1 amend: bandingkan hash sebelum dan sesudah
+
+$ echo "baris ketiga" >> catatan.txt
+
+$ git add catatan.txt
+
+$ git commit -m "feat: tambah baris ketiga"
+[main 78fc679] feat: tambah baris ketiga
+ 1 file changed, 1 insertion(+)
+
+$ git log --oneline -n 2
+78fc679 feat: tambah baris ketiga
+fc27574 chore: abaikan artefak build dan berkas rahasia
+
+$ git commit --amend -m "feat: tambahkan baris ketiga pada catatan"
+[main e8a9861] feat: tambahkan baris ketiga pada catatan
+ Date: Tue Oct 6 05:22:03 2026 +0700
+ 1 file changed, 1 insertion(+)
+
+$ git log --oneline -n 2
+e8a9861 feat: tambahkan baris ketiga pada catatan
+fc27574 chore: abaikan artefak build dan berkas rahasia
+# 4.2 restore
+
+$ echo "kesalahan ketik" >> catatan.txt
+
+$ git status --short
+ M catatan.txt
+
+$ git restore catatan.txt
+
+$ git status --short
+
+$ echo "salah lagi" >> catatan.txt && git add catatan.txt
+
+$ git restore --staged catatan.txt
+
+$ git status --short
+ M catatan.txt
+
+$ git restore catatan.txt
+
+$ git status --short
+# 4.3 tiga commit percobaan
+
+$ local i;
+for i in 1 2 3;
+do
+echo "percobaan $i" >> log-percobaan.txt;
+git add log-percobaan.txt;
+git commit -q -m "test: commit percobaan $i";
+done;
+git log --oneline -n 4
+adb35e5 test: commit percobaan 3
+c51ffb8 test: commit percobaan 2
+0c5edc9 test: commit percobaan 1
+e8a9861 feat: tambahkan baris ketiga pada catatan
+# 4.4 reset --soft: perubahan tetap di STAGING
+
+$ git reset --soft HEAD~1
+
+$ git status --short
+M  log-percobaan.txt
+
+$ git commit -m "test: commit percobaan 3 (dipulihkan)"
+[main d6481d6] test: commit percobaan 3 (dipulihkan)
+ 1 file changed, 1 insertion(+)
+# reset --mixed: perubahan turun ke WORKING DIR
+
+$ git reset --mixed HEAD~1
+Unstaged changes after reset:
+M	log-percobaan.txt
+
+$ git status --short
+ M log-percobaan.txt
+
+$ git add . && git commit -m "test: commit percobaan 3 (dipulihkan kembali)"
+[main 73b6990] test: commit percobaan 3 (dipulihkan kembali)
+ 1 file changed, 1 insertion(+)
+# 4.5 reset --hard lalu pulihkan dengan reflog (aman: semua sudah di-commit)
+
+$ git status --short
+
+$ git log --oneline -n 2
+73b6990 test: commit percobaan 3 (dipulihkan kembali)
+c51ffb8 test: commit percobaan 2
+
+$ git reset --hard HEAD~1
+HEAD is now at c51ffb8 test: commit percobaan 2
+
+$ git status --short
+
+$ git log --oneline -n 2
+c51ffb8 test: commit percobaan 2
+0c5edc9 test: commit percobaan 1
+
+$ git reflog -n 6
+c51ffb8 HEAD@{0}: reset: moving to HEAD~1
+73b6990 HEAD@{1}: commit: test: commit percobaan 3 (dipulihkan kembali)
+c51ffb8 HEAD@{2}: reset: moving to HEAD~1
+d6481d6 HEAD@{3}: commit: test: commit percobaan 3 (dipulihkan)
+c51ffb8 HEAD@{4}: reset: moving to HEAD~1
+adb35e5 HEAD@{5}: commit: test: commit percobaan 3
+
+$ git reset --hard 'HEAD@{1}'
+HEAD is now at 73b6990 test: commit percobaan 3 (dipulihkan kembali)
+
+$ git log --oneline -n 2
+73b6990 test: commit percobaan 3 (dipulihkan kembali)
+c51ffb8 test: commit percobaan 2
+# 4.6 revert: commit lama tetap ada, ditambah commit pembatal
+
+$ git revert --no-edit HEAD
+[main 0d09496] Revert "test: commit percobaan 3 (dipulihkan kembali)"
+ Date: Tue Oct 6 05:22:03 2026 +0700
+ 1 file changed, 1 deletion(-)
+
+$ git log --oneline -n 3
+0d09496 Revert "test: commit percobaan 3 (dipulihkan kembali)"
+73b6990 test: commit percobaan 3 (dipulihkan kembali)
+c51ffb8 test: commit percobaan 2
+
+==================== M03 JOB 5 - Pemeriksaan repository praktikum (hanya dibaca) ====================
+
+$ cd '/home/vinn_vinn/Dev-ops-' && git log --oneline --graph --decorate -n 12
+* f4ea314 (HEAD -> main, tag: v1.0.0, origin/main) docs: tambahkan panduan penggunaan dan daftar skrip
+* 7b44834 chore: lengkapi daftar berkas yang diabaikan
+* 99a97d0 feat: tambahkan buat-log.sh sebagai pembangkit log sintetis
+* 84450b2 feat: tambahkan sysreport.sh untuk laporan kesehatan sistem
+* 8b92862 refactor: pisahkan fungsi bersama ke lib/common.sh dan tambahkan logging
+* e29fea9 docs: tambahkan kerangka blameless postmortem
+* 7a26b0f feat: otomasi deployment menggantikan prosedur manual (Minggu 1)
+* 442fa06 docs: tambahkan dokumen serah-terima manual HANDOVER.md
+* cee2f89 feat: tambahkan aplikasi Flask Sentra dan dependensi terkunci
+* 974b431 chore: tambahkan .gitignore sebelum commit apa pun (Minggu 1)
+* 77d32d3 docs: tambahkan README indeks praktikum DevOps
+# Pemindaian kredensial pada seluruh riwayat. Keluaran kosong = bersih.
+
+$ cd '/home/vinn_vinn/Dev-ops-' && git log -p --all | grep -nEi '(ghp_|AKIA|BEGIN .*PRIVATE KEY|password *=)' | head
+
+$ cd '/home/vinn_vinn/Dev-ops-' && git tag -n
+v1.0.0          Rilis pertama: deployment otomatis dan laporan sistem
+
+$ cd '/home/vinn_vinn/Dev-ops-' && git show v1.0.0 --stat | head -n 12
+tag v1.0.0
+Tagger: Fahmi Zainul Musthofa <Fahmi15062005@gmail.com>
+Date:   Tue Oct 6 05:10:05 2026 +0700
+
+Rilis pertama: deployment otomatis dan laporan sistem
+
+commit f4ea3147b2254f720ee017c85e4faa1eda618221
+Author: Fahmi Zainul Musthofa <Fahmi15062005@gmail.com>
+Date:   Tue Oct 6 05:09:59 2026 +0700
+
+    docs: tambahkan panduan penggunaan dan daftar skrip
+
+
+$ cd '/home/vinn_vinn/Dev-ops-' && git remote -v
+origin	https://github.com/Fahmimusthofa-web/Dev-ops-.git (fetch)
+origin	https://github.com/Fahmimusthofa-web/Dev-ops-.git (push)
+
+$ cd '/home/vinn_vinn/Dev-ops-' && git log --format='%h %an <%ae> %s' | head -n 12
+f4ea314 Fahmi Zainul Musthofa <Fahmi15062005@gmail.com> docs: tambahkan panduan penggunaan dan daftar skrip
+7b44834 Fahmi Zainul Musthofa <Fahmi15062005@gmail.com> chore: lengkapi daftar berkas yang diabaikan
+99a97d0 Fahmi Zainul Musthofa <Fahmi15062005@gmail.com> feat: tambahkan buat-log.sh sebagai pembangkit log sintetis
+84450b2 Fahmi Zainul Musthofa <Fahmi15062005@gmail.com> feat: tambahkan sysreport.sh untuk laporan kesehatan sistem
+8b92862 Fahmi Zainul Musthofa <Fahmi15062005@gmail.com> refactor: pisahkan fungsi bersama ke lib/common.sh dan tambahkan logging
+e29fea9 Fahmi Zainul Musthofa <Fahmi15062005@gmail.com> docs: tambahkan kerangka blameless postmortem
+7a26b0f Fahmi Zainul Musthofa <Fahmi15062005@gmail.com> feat: otomasi deployment menggantikan prosedur manual (Minggu 1)
+442fa06 Fahmi Zainul Musthofa <Fahmi15062005@gmail.com> docs: tambahkan dokumen serah-terima manual HANDOVER.md
+cee2f89 Fahmi Zainul Musthofa <Fahmi15062005@gmail.com> feat: tambahkan aplikasi Flask Sentra dan dependensi terkunci
+974b431 Fahmi Zainul Musthofa <Fahmi15062005@gmail.com> chore: tambahkan .gitignore sebelum commit apa pun (Minggu 1)
+77d32d3 Fahmi Zainul Musthofa <Fahmi15062005@gmail.com> docs: tambahkan README indeks praktikum DevOps
+# JOB 1 (kunci SSH, ssh -T git@github.com, remote SSH) dikerjakan manual: butuh passphrase.
